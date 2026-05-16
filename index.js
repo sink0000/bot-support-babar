@@ -18,7 +18,8 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildInvites
+        GatewayIntentBits.GuildInvites,
+        GatewayIntentBits.GuildMessageReactions
     ]
 });
 
@@ -179,11 +180,17 @@ client.on('messageCreate', async message => {
             .setColor('#5865F2')
             .setTitle('📊 Nouveau Sondage')
             .setDescription(`
-╭━━━━━━━━━━━━━━━━━━╮
+╔════════════════════╗
 
-${question}
+📝 **Question :**
+> ${question}
 
-╰━━━━━━━━━━━━━━━━━━╯
+👥 **Participants :** \`0\`
+
+✅ = Oui
+❌ = Non
+
+╚════════════════════╝
             `)
             .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
             .setFooter({
@@ -196,6 +203,51 @@ ${question}
 
         await pollMessage.react('✅');
         await pollMessage.react('❌');
+
+        const filter = (reaction, user) =>
+            ['✅', '❌'].includes(reaction.emoji.name) && !user.bot;
+
+        const collector = pollMessage.createReactionCollector({
+            filter
+        });
+
+        collector.on('collect', async () => {
+
+            const fetchedMessage = await pollMessage.fetch();
+
+            const yes =
+                fetchedMessage.reactions.cache.get('✅')?.count - 1 || 0;
+
+            const no =
+                fetchedMessage.reactions.cache.get('❌')?.count - 1 || 0;
+
+            const total = yes + no;
+
+            const newEmbed = new EmbedBuilder()
+                .setColor('#5865F2')
+                .setTitle('📊 Nouveau Sondage')
+                .setDescription(`
+╔════════════════════╗
+
+📝 **Question :**
+> ${question}
+
+👥 **Participants :** \`${total}\`
+
+✅ **Oui :** \`${yes}\`
+❌ **Non :** \`${no}\`
+
+╚════════════════════╝
+                `)
+                .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
+                .setFooter({
+                    text: `Sondage créé par ${message.author.username}`
+                });
+
+            pollMessage.edit({
+                embeds: [newEmbed]
+            });
+        });
     }
 
     // =========================
@@ -343,10 +395,6 @@ ${annonce}
         });
     }
 });
-
-// =========================
-// BUTTONS ROLES
-// =========================
 
 client.on('interactionCreate', async interaction => {
 
