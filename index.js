@@ -3,7 +3,6 @@ require('dotenv').config();
 const {
     Client,
     GatewayIntentBits,
-    PermissionsBitField,
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
@@ -95,29 +94,44 @@ client.on('messageCreate', async message => {
 
     if (message.content === '!topinvite') {
 
-        const invites = await message.guild.invites.fetch();
+        try {
 
-        const sorted = invites
-            .sort((a, b) => b.uses - a.uses)
-            .first(10);
+            const invites = await message.guild.invites.fetch();
 
-        let description = '';
+            const inviteArray = [...invites.values()];
 
-        sorted.forEach((invite, index) => {
-            description += `**${index + 1}.** <@${invite.inviter.id}> • \`${invite.uses}\` invitations\n`;
-        });
+            inviteArray.sort((a, b) => b.uses - a.uses);
 
-        const embed = new EmbedBuilder()
-            .setColor('#5865F2')
-            .setTitle('🏆 Top Invitations')
-            .setDescription(description || 'Aucune invitation.')
-            .setFooter({
-                text: `Demandé par ${message.author.username}`
+            const top = inviteArray.slice(0, 10);
+
+            let description = '';
+
+            top.forEach((invite, index) => {
+
+                description += `**${index + 1}.** ${invite.inviter} • \`${invite.uses}\` invitations\n`;
+
             });
 
-        return message.channel.send({
-            embeds: [embed]
-        });
+            const embed = new EmbedBuilder()
+                .setColor('#5865F2')
+                .setTitle('🏆 Top Invitations')
+                .setDescription(description || 'Aucune invitation trouvée.')
+                .setFooter({
+                    text: `Demandé par ${message.author.username}`
+                });
+
+            message.channel.send({
+                embeds: [embed]
+            });
+
+        } catch (err) {
+
+            console.log(err);
+
+            message.reply(
+                '❌ Impossible de récupérer les invitations.'
+            );
+        }
     }
 
     // =========================
@@ -168,7 +182,7 @@ client.on('messageCreate', async message => {
                 `**Choisis tes rôles ci-dessous !**\n\n` +
                 `Clique sur les boutons pour les ajouter ou les retirer.`
             )
-            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a0771d3&is=6a062053&hm=241de30c409b07866182967a7cec6b54bbe2f5b8e4b18c5aabce7d76c3bc5b1a&');
+            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg');
 
         const row1 = new ActionRowBuilder()
             .addComponents(
