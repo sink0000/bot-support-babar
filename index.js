@@ -6,7 +6,8 @@ const {
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
-    ButtonStyle
+    ButtonStyle,
+    PermissionsBitField
 } = require('discord.js');
 
 const client = new Client({
@@ -19,8 +20,24 @@ const client = new Client({
     ]
 });
 
+const snipes = new Map();
+
 client.once('ready', () => {
     console.log(`${client.user.tag} connecté !`);
+});
+
+// =========================
+// SNIPE MESSAGE DELETE
+// =========================
+
+client.on('messageDelete', message => {
+
+    if (!message.content) return;
+
+    snipes.set(message.channel.id, {
+        content: message.content,
+        author: message.author
+    });
 });
 
 client.on('messageCreate', async message => {
@@ -46,8 +63,14 @@ client.on('messageCreate', async message => {
 🏆 **Invitations**
 > !topinvite
 
-🎮 **Valorant**
-> !valo pseudo#tag
+📊 **Sondage**
+> !poll question
+
+📢 **Annonce**
+> !annonce texte
+
+🗑️ **Snipe**
+> !snipe
 
 📚 **Aide**
 > !help
@@ -135,33 +158,88 @@ client.on('messageCreate', async message => {
     }
 
     // =========================
-    // VALORANT
+    // POLL
     // =========================
 
-    if (message.content.startsWith('!valo')) {
+    if (message.content.startsWith('!poll')) {
 
-        const args = message.content.slice(6).trim();
+        const question = message.content.slice(6);
 
-        if (!args.includes('#')) {
+        if (!question) {
             return message.reply(
-                '❌ Utilisation : `!valo pseudo#tag`'
+                '❌ Écris une question.'
             );
         }
 
         const embed = new EmbedBuilder()
-            .setColor('#fa4454')
-            .setTitle('🎮 Valorant Stats')
-            .setDescription(`
-👤 **Joueur :** ${args}
-
-🏆 **Rank :** Diamond 2
-🎯 **K/D :** 1.34
-💀 **Headshot :** 28%
-🔥 **Wins :** 124
-⚔️ **Main Agent :** Jett
-            `)
+            .setColor('#5865F2')
+            .setTitle('📊 Nouveau Sondage')
+            .setDescription(question)
             .setFooter({
-                text: 'Nova Valorant Tracker'
+                text: `Sondage créé par ${message.author.username}`
+            });
+
+        const pollMessage = await message.channel.send({
+            embeds: [embed]
+        });
+
+        await pollMessage.react('✅');
+        await pollMessage.react('❌');
+    }
+
+    // =========================
+    // ANNONCE
+    // =========================
+
+    if (message.content.startsWith('!annonce')) {
+
+        if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+            return message.reply(
+                '❌ Tu dois être administrateur.'
+            );
+        }
+
+        const annonce = message.content.slice(10);
+
+        if (!annonce) {
+            return message.reply(
+                '❌ Écris une annonce.'
+            );
+        }
+
+        const embed = new EmbedBuilder()
+            .setColor('#ff0000')
+            .setTitle('📢 Nouvelle Annonce')
+            .setDescription(annonce)
+            .setFooter({
+                text: `Annonce par ${message.author.username}`
+            });
+
+        return message.channel.send({
+            embeds: [embed]
+        });
+    }
+
+    // =========================
+    // SNIPE
+    // =========================
+
+    if (message.content === '!snipe') {
+
+        const snipe = snipes.get(message.channel.id);
+
+        if (!snipe) {
+            return message.reply(
+                '❌ Aucun message supprimé.'
+            );
+        }
+
+        const embed = new EmbedBuilder()
+            .setColor('#2b2d31')
+            .setTitle('🗑️ Message supprimé')
+            .setDescription(snipe.content)
+            .setFooter({
+                text: `Message de ${snipe.author.tag}`
             });
 
         return message.channel.send({
