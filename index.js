@@ -23,11 +23,11 @@ const client = new Client({
 const snipes = new Map();
 
 client.once('ready', () => {
-    console.log(`${client.user.tag} connecté !`);
+    console.log('NOUVEAU CODE');
 });
 
 // =========================
-// SNIPE MESSAGE DELETE
+// MESSAGE DELETE SNIPE
 // =========================
 
 client.on('messageDelete', message => {
@@ -283,12 +283,6 @@ client.on('messageCreate', async message => {
                     .setCustomId('fivem')
                     .setLabel('𝐅𝐈𝐕𝐄𝐌')
                     .setEmoji('🚗')
-                    .setStyle(ButtonStyle.Success),
-
-                new ButtonBuilder()
-                    .setCustomId('valorant')
-                    .setLabel('Valorant')
-                    .setEmoji('🔫')
                     .setStyle(ButtonStyle.Success),
 
                 new ButtonBuilder()
