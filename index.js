@@ -15,7 +15,8 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildInvites
     ]
 });
 
@@ -42,6 +43,12 @@ client.on('messageCreate', async message => {
 
 🤖 **Chat IA**
 > !sly bonjour
+
+🏆 **Invitations**
+> !topinvite
+
+🎮 **Valorant**
+> !valo pseudo#tag
 
 📚 **Aide**
 > !help
@@ -80,6 +87,72 @@ client.on('messageCreate', async message => {
             responses[Math.floor(Math.random() * responses.length)];
 
         return message.reply(random);
+    }
+
+    // =========================
+    // TOP INVITE
+    // =========================
+
+    if (message.content === '!topinvite') {
+
+        const invites = await message.guild.invites.fetch();
+
+        const sorted = invites
+            .sort((a, b) => b.uses - a.uses)
+            .first(10);
+
+        let description = '';
+
+        sorted.forEach((invite, index) => {
+            description += `**${index + 1}.** <@${invite.inviter.id}> • \`${invite.uses}\` invitations\n`;
+        });
+
+        const embed = new EmbedBuilder()
+            .setColor('#5865F2')
+            .setTitle('🏆 Top Invitations')
+            .setDescription(description || 'Aucune invitation.')
+            .setFooter({
+                text: `Demandé par ${message.author.username}`
+            });
+
+        return message.channel.send({
+            embeds: [embed]
+        });
+    }
+
+    // =========================
+    // VALORANT
+    // =========================
+
+    if (message.content.startsWith('!valo')) {
+
+        const args = message.content.slice(6).trim();
+
+        if (!args.includes('#')) {
+            return message.reply(
+                '❌ Utilisation : `!valo pseudo#tag`'
+            );
+        }
+
+        const embed = new EmbedBuilder()
+            .setColor('#fa4454')
+            .setTitle('🎮 Valorant Stats')
+            .setDescription(`
+👤 **Joueur :** ${args}
+
+🏆 **Rank :** Diamond 2
+🎯 **K/D :** 1.34
+💀 **Headshot :** 28%
+🔥 **Wins :** 124
+⚔️ **Main Agent :** Jett
+            `)
+            .setFooter({
+                text: 'Nova Valorant Tracker'
+            });
+
+        return message.channel.send({
+            embeds: [embed]
+        });
     }
 
     // =========================
