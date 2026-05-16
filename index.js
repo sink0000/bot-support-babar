@@ -25,7 +25,7 @@ const client = new Client({
 
 const snipes = new Map();
 
-client.once('ready', () => {
+client.once('clientReady', () => {
     console.log(`${client.user.tag} connecté !`);
 });
 
@@ -44,6 +44,8 @@ client.on('messageDelete', message => {
 });
 
 client.on('messageCreate', async message => {
+
+    console.log(message.content);
 
     if (message.author.bot) return;
 
