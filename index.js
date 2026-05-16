@@ -1,3 +1,5 @@
+console.log("VERSION PANEL V2");
+
 require('dotenv').config();
 
 const {
@@ -23,11 +25,11 @@ const client = new Client({
 const snipes = new Map();
 
 client.once('ready', () => {
-    console.log('NOUVEAU CODE');
+    console.log(`${client.user.tag} connecté !`);
 });
 
 // =========================
-// MESSAGE DELETE SNIPE
+// SNIPE DELETE
 // =========================
 
 client.on('messageDelete', message => {
@@ -75,6 +77,7 @@ client.on('messageCreate', async message => {
 📚 **Aide**
 > !help
             `)
+            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
             .setFooter({
                 text: 'Support Babar'
             });
@@ -139,6 +142,7 @@ client.on('messageCreate', async message => {
                 .setColor('#5865F2')
                 .setTitle('🏆 Top Invitations')
                 .setDescription(description || 'Aucune invitation trouvée.')
+                .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
                 .setFooter({
                     text: `Demandé par ${message.author.username}`
                 });
