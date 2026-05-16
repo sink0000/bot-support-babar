@@ -52,7 +52,7 @@ client.on('messageCreate', async message => {
 
         const embed = new EmbedBuilder()
             .setColor('#2b2d31')
-            .setTitle('📖 Commandes Nova')
+            .setTitle('📖 Commandes Support Babar')
             .setDescription(`
 🎭 **Rôles**
 > !roles
@@ -76,7 +76,7 @@ client.on('messageCreate', async message => {
 > !help
             `)
             .setFooter({
-                text: 'Nova Bot'
+                text: 'Support Babar'
             });
 
         return message.channel.send({
@@ -99,7 +99,7 @@ client.on('messageCreate', async message => {
         const responses = [
             `👋 Salut ${message.author.username} !`,
             `🔥 Je suis là pour t'aider.`,
-            `😎 Nova Bot répond présent.`,
+            `😎 Support Babar répond présent.`,
             `🚀 Commande reçue : ${args}`,
             `🤖 Intéressant...`,
             `💬 Tu as dit : ${args}`
@@ -174,7 +174,14 @@ client.on('messageCreate', async message => {
         const embed = new EmbedBuilder()
             .setColor('#5865F2')
             .setTitle('📊 Nouveau Sondage')
-            .setDescription(question)
+            .setDescription(`
+╭━━━━━━━━━━━━━━━━━━╮
+
+${question}
+
+╰━━━━━━━━━━━━━━━━━━╯
+            `)
+            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
             .setFooter({
                 text: `Sondage créé par ${message.author.username}`
             });
@@ -210,7 +217,14 @@ client.on('messageCreate', async message => {
         const embed = new EmbedBuilder()
             .setColor('#ff0000')
             .setTitle('📢 Nouvelle Annonce')
-            .setDescription(annonce)
+            .setDescription(`
+╭━━━━━━━━━━━━━━━━━━╮
+
+${annonce}
+
+╰━━━━━━━━━━━━━━━━━━╯
+            `)
+            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
             .setFooter({
                 text: `Annonce par ${message.author.username}`
             });
@@ -338,7 +352,6 @@ client.on('interactionCreate', async interaction => {
         tiktok: '1401333763216117871',
         twitch: '1401333147903197335',
         fivem: '1401731584947654656',
-        valorant: '1401732135198654524',
         warzone: '1401732932447633449',
         bo: '1401733341560049746',
         roblox: '1504609283860467853',
