@@ -1,4 +1,4 @@
-console.log("VERSION PANEL V2");
+console.log("VERSION PANEL V3");
 
 require('dotenv').config();
 
@@ -75,10 +75,13 @@ client.on('messageCreate', async message => {
 🗑️ **Snipe**
 > !snipe
 
+🌍 **Infos Serveur**
+> !serverinfo
+
 📚 **Aide**
 > !help
             `)
-            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
+            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a0a14d3&is=6a08c353&hm=bf0ca8909aca9bdaa5cfb044baa787f8ceef19aaf69e4a0b2482c01e7e3ddc6d&')
             .setFooter({
                 text: 'Support Babar'
             });
@@ -116,6 +119,55 @@ client.on('messageCreate', async message => {
     }
 
     // =========================
+    // SERVER INFO
+    // =========================
+
+    if (message.content === '!serverinfo') {
+
+        const guild = message.guild;
+
+        const owner = await guild.fetchOwner();
+
+        const embed = new EmbedBuilder()
+            .setColor('#5865F2')
+            .setTitle(`🌍 Informations du Serveur`)
+            .setDescription(`
+╔════════════════════╗
+
+👑 **Owner :**
+> ${owner.user.tag}
+
+👥 **Membres :**
+> ${guild.memberCount}
+
+🚀 **Boosts :**
+> ${guild.premiumSubscriptionCount}
+
+⭐ **Niveau Boost :**
+> ${guild.premiumTier}
+
+📅 **Création :**
+> <t:${parseInt(guild.createdTimestamp / 1000)}:F>
+
+🆔 **ID Serveur :**
+> ${guild.id}
+
+╚════════════════════╝
+            `)
+            .setThumbnail(guild.iconURL({
+                dynamic: true
+            }))
+            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a0a14d3&is=6a08c353&hm=bf0ca8909aca9bdaa5cfb044baa787f8ceef19aaf69e4a0b2482c01e7e3ddc6d&')
+            .setFooter({
+                text: `Demandé par ${message.author.username}`
+            });
+
+        return message.channel.send({
+            embeds: [embed]
+        });
+    }
+
+    // =========================
     // TOP INVITE
     // =========================
 
@@ -143,7 +195,7 @@ client.on('messageCreate', async message => {
                 .setColor('#5865F2')
                 .setTitle('🏆 Top Invitations')
                 .setDescription(description || 'Aucune invitation trouvée.')
-                .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
+                .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a0a14d3&is=6a08c353&hm=bf0ca8909aca9bdaa5cfb044baa787f8ceef19aaf69e4a0b2482c01e7e3ddc6d&')
                 .setFooter({
                     text: `Demandé par ${message.author.username}`
                 });
@@ -192,7 +244,7 @@ client.on('messageCreate', async message => {
 
 ╚════════════════════╝
             `)
-            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
+            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a0a14d3&is=6a08c353&hm=bf0ca8909aca9bdaa5cfb044baa787f8ceef19aaf69e4a0b2482c01e7e3ddc6d&')
             .setFooter({
                 text: `Sondage créé par ${message.author.username}`
             });
@@ -239,7 +291,7 @@ client.on('messageCreate', async message => {
 
 ╚════════════════════╝
                 `)
-                .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
+                .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a0a14d3&is=6a08c353&hm=bf0ca8909aca9bdaa5cfb044baa787f8ceef19aaf69e4a0b2482c01e7e3ddc6d&')
                 .setFooter({
                     text: `Sondage créé par ${message.author.username}`
                 });
@@ -280,7 +332,7 @@ ${annonce}
 
 ╰━━━━━━━━━━━━━━━━━━╯
             `)
-            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a08c353&is=6a0771d3&hm=be68bbbc4eec6a9fa33560e6d89ae968ce5094fcf5b52c7f6f41ef329ab73493&')
+            .setImage('https://cdn.discordapp.com/attachments/1375088553230467084/1503839124535246858/telechargement.jpg?ex=6a0a14d3&is=6a08c353&hm=bf0ca8909aca9bdaa5cfb044baa787f8ceef19aaf69e4a0b2482c01e7e3ddc6d&')
             .setFooter({
                 text: `Annonce par ${message.author.username}`
             });
